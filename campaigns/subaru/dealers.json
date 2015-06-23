@@ -1,0 +1,24 @@
+[
+	{
+		"latitude": 37.7833,
+		"longitude": -122.4167,
+		"postalCode": 94123,
+		"city": "San Francisco",
+		"region": "CA",
+		"payment": 189,
+		"dealer": "SF Subaru",
+		"phone": "800-888-8888",
+		"website": "sf.subaru.com"
+	},
+	{
+		"latitude": 34.0500,
+		"longitude": -118.2500,
+		"postalCode": 90210,
+		"city": "Los Angeles",
+		"region": "CA",
+		"payment": 489,
+		"dealer": "LA Subaru",
+		"phone": "800-800-8000",
+		"website": "la.subaru.com"
+	}
+]

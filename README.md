@@ -1,2 +1,4 @@
-# cs-node
-BrightRoll Creative Services Node Server
+cs-node
+=======
+
+Creative Services Node Server

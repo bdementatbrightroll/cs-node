@@ -1,0 +1,52 @@
+[
+	{
+		"address":"1401 East Dorothy Lane",
+		"city":"Kettering",
+		"state":"OH",
+		"zip":"45429",
+		"latitude":"39.704330",
+		"longitude":"-84.141355",
+		"phone":"9372994721",
+		"website":"http://www.captainds.com/"
+	},
+	{
+		"address":"656 Wagner Avenue",
+		"city":"Greenville",
+		"state":"OH",
+		"zip":"45331",
+		"latitude":"40.119562",
+		"longitude":"-84.622810",
+		"phone":"9375485956",
+		"website":"http://www.captainds.com/"
+	},
+	{
+		"address":"6380 Brandt Pike",
+		"city":"Dayton",
+		"state":"OH",
+		"zip":"45424",
+		"latitude":"39.845279",
+		"longitude":"-84.114504",
+		"phone":"9372375445",
+		"website":"http://www.captainds.com/"
+	},
+	{
+		"address":"7481 East Admiral Place",
+		"city":"Tulsa",
+		"state":"OK",
+		"zip":"74115",
+		"latitude":"36.161422",
+		"longitude":"-95.891044",
+		"phone":"9188350716",
+		"website":"http://www.captainds.com/"
+	},
+	{
+		"address":"7603 N Owasso Expressway",
+		"city":"Owasso",
+		"state":"OK",
+		"zip":"74055",
+		"latitude":"36.265104",
+		"longitude":"-95.846070",
+		"phone":"9182729881",
+		"website":"http://www.captainds.com/"
+	}
+]

@@ -1,0 +1,26 @@
+{
+  "name": "cs-node",
+  "version": "1.0.0",
+  "description": "Creative Services Node Server",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.12.3",
+    "maxmind": "^0.5.5",
+    "maxmind-geolite-mirror": "^1.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BrightRollCreativeServices/cs-node.git"
+  },
+  "author": "Brandon Dement",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BrightRollCreativeServices/cs-node/issues"
+  },
+  "homepage": "https://github.com/BrightRollCreativeServices/cs-node"
+}
