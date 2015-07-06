@@ -38,7 +38,8 @@ if (cluster.isMaster) {
 		var fileSystemPath = path.join(__dirname, webPath);
 		// console.log("fileSystemPath: " + fileSystemPath);
 		if (webPath === "/crossdomain.xml") {
-			response.status(200).sendFile(__dirname + '/crossdomain.xml');
+			response.status(200).type("xml").send('<cross-domain-policy><site-control permitted-cross-domain-policies="all"/><allow-access-from domain="*" secure="false"/><allow-http-request-headers-from domain="*" headers="*" secure="false"/></cross-domain-policy>');
+			// response.status(200).sendFile(__dirname + '/crossdomain.xml');
 			return;
 		}
 		if (whitelist.indexOf(webPath) === -1) {
