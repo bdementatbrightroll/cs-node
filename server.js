@@ -40,13 +40,13 @@ if (cluster.isMaster) {
 			response.status(200).sendFile(__dirname + '/crossdomain.xml');
 			return;
 		}
-		fs.lstat(fileSystemPath, function(err, stats) {
-			if (err || !stats || !stats.isDirectory()) {
-				//TODO log invalid request
+		// fs.lstat(fileSystemPath, function(err, stats) {
+			// if (err || !stats || !stats.isDirectory()) {
+			// 	//TODO log invalid request
 
-				send404(response);
-				return;
-			}
+			// 	send404(response);
+			// 	return;
+			// }
 			var handler = require(fileSystemPath);
 			if (!handler.onRequest) {
 				//TODO alert broken handler
@@ -66,7 +66,7 @@ if (cluster.isMaster) {
 			// } catch (e) {
 			// 	logError(e);
 			// }
-		});
+		// });
 	});
 	app.listen(PORT);
 }
