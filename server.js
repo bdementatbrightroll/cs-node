@@ -4,8 +4,16 @@ var cluster	= require('cluster');
 var os		= require('os');
 var url		= require('url');
 var path	= require('path');
-var fs		= require('graceful-fs');
+var fs		= require('fs');
 var whitelist = require('./whitelist.json'); // UPDATES REQUIRE RESTART
+var app = require('express')();
+
+var handlers = {};
+for (var key in whitelist) {
+	var webPath = whitelist[key]
+	var fileSystemPath = path.join(__dirname, webPath);
+	handlers[webPath] = require(fileSystemPath);
+}
 
 const PORT = 1337; //TODO: config dev/prod
 
@@ -24,49 +32,29 @@ if (cluster.isMaster) {
 		}
 	});
 } else {
-	var app = require('express')();
 	app.get("*", function(request, response) {
 		var webPath = url.parse(request.url).pathname;
 		// console.log("webPath: " + webPath);
 		var fileSystemPath = path.join(__dirname, webPath);
 		// console.log("fileSystemPath: " + fileSystemPath);
+		if (webPath === "/crossdomain.xml") {
+			response.status(200).sendFile(__dirname + '/crossdomain.xml');
+			return;
+		}
 		if (whitelist.indexOf(webPath) === -1) {
 			//TODO log invalid request
 			console.error('invalid request: ' + webPath);
 			send404(response);
 			return;
 		}
-		if (webPath === "/crossdomain.xml") {
-			response.status(200).sendFile(__dirname + '/crossdomain.xml');
-			return;
+		var handler = handlers[webPath];
+		try {
+			handler.onRequest(request, response);
+		} catch(e) {
+			//TODO log handler error
+			logError(e);
+			send503(response);
 		}
-		// fs.lstat(fileSystemPath, function(err, stats) {
-			// if (err || !stats || !stats.isDirectory()) {
-			// 	//TODO log invalid request
-
-			// 	send404(response);
-			// 	return;
-			// }
-			var handler = require(fileSystemPath);
-			if (!handler.onRequest) {
-				//TODO alert broken handler
-				send404(response);
-				return;
-			}
-			try {
-				handler.onRequest(request, response);
-			} catch(e) {
-				//TODO log handler error
-				logError(e);
-				send503(response);
-			}
-			// try {
-			// 	// catch all for closing out responses
-			// 	response.end(); 
-			// } catch (e) {
-			// 	logError(e);
-			// }
-		// });
 	});
 	app.listen(PORT);
 }
