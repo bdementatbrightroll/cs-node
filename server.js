@@ -4,7 +4,7 @@ var cluster	= require('cluster');
 var os		= require('os');
 var url		= require('url');
 var path	= require('path');
-var fs		= require('fs');
+var fs		= require('graceful-fs');
 var whitelist = require('./whitelist.json'); // UPDATES REQUIRE RESTART
 
 const PORT = 1337; //TODO: config dev/prod
