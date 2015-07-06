@@ -1,3 +1,5 @@
+console.log('starting up');
+
 require('newrelic');
 // var posix	= require('posix');
 var cluster	= require('cluster');
@@ -12,29 +14,30 @@ var handlers = {};
 for (var key in whitelist) {
 	var webPath = whitelist[key]
 	var fileSystemPath = path.join(__dirname, webPath);
+	console.log('require(' + fileSystemPath + ')');
 	handlers[webPath] = require(fileSystemPath);
 }
 
 const PORT = 1337; //TODO: config dev/prod 
 
-// var numCPUs = os.cpus().length;
-// if (cluster.isMaster) {
-// 	// posix.setrlimit('nofile', {soft:null, hard:null});
-// 	for (var i = 0; i < numCPUs; i++) {
-// 		cluster.fork();
-// 	}
-// 	//TODO: Handle children errors, stoppages, etc.
-// 	cluster.on('exit', function(worker, code, signal) {
-// 		console.log('worker ' + worker.process.pid + ' died');
-// 		if (worker.suicide !== true) {
-// 			console.log('restarting process ' + worker.id);
-// 			// http.createServer(onRequest).listen(PORT);
-// 		}
-// 	});
-// } else {
+var numCPUs = os.cpus().length;
+if (cluster.isMaster) {
+	// posix.setrlimit('nofile', {soft:null, hard:null});
+	for (var i = 0; i < numCPUs; i++) {
+		cluster.fork();
+	}
+	//TODO: Handle children errors, stoppages, etc.
+	cluster.on('exit', function(worker, code, signal) {
+		console.log('worker ' + worker.process.pid + ' died');
+		if (worker.suicide !== true) {
+			console.log('restarting process ' + worker.id);
+			// http.createServer(onRequest).listen(PORT);
+		}
+	});
+} else {
 	app.get("*", function(request, response) {
 		var webPath = url.parse(request.url).pathname;
-		// console.log("webPath: " + webPath);
+		console.log("webPath: " + webPath);
 		var fileSystemPath = path.join(__dirname, webPath);
 		// console.log("fileSystemPath: " + fileSystemPath);
 		if (webPath === "/crossdomain.xml") {
@@ -58,7 +61,7 @@ const PORT = 1337; //TODO: config dev/prod
 		}
 	});
 	app.listen(PORT);
-// }
+}
 function logError(error) {
 	console.error("ERROR " + JSON.stringify(error));
 	console.error(error.stack);
