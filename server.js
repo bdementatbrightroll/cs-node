@@ -1,4 +1,5 @@
 require('newrelic');
+var posix	= require('posix');
 var cluster	= require('cluster');
 var os		= require('os');
 var url		= require('url');
@@ -10,6 +11,7 @@ const PORT = 1337; //TODO: config dev/prod
 
 var numCPUs = os.cpus().length;
 if (cluster.isMaster) {
+	posix.setrlimit('nofile', {soft:null, hard:null});
 	for (var i = 0; i < numCPUs; i++) {
 		cluster.fork();
 	}
