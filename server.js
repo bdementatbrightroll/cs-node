@@ -15,23 +15,23 @@ for (var key in whitelist) {
 	handlers[webPath] = require(fileSystemPath);
 }
 
-const PORT = 1337; //TODO: config dev/prod
+const PORT = 1337; //TODO: config dev/prod 
 
-var numCPUs = os.cpus().length;
-if (cluster.isMaster) {
-	// posix.setrlimit('nofile', {soft:null, hard:null});
-	for (var i = 0; i < numCPUs; i++) {
-		cluster.fork();
-	}
-	//TODO: Handle children errors, stoppages, etc.
-	cluster.on('exit', function(worker, code, signal) {
-		console.log('worker ' + worker.process.pid + ' died');
-		if (worker.suicide !== true) {
-			console.log('restarting process ' + worker.id);
-			// http.createServer(onRequest).listen(PORT);
-		}
-	});
-} else {
+// var numCPUs = os.cpus().length;
+// if (cluster.isMaster) {
+// 	// posix.setrlimit('nofile', {soft:null, hard:null});
+// 	for (var i = 0; i < numCPUs; i++) {
+// 		cluster.fork();
+// 	}
+// 	//TODO: Handle children errors, stoppages, etc.
+// 	cluster.on('exit', function(worker, code, signal) {
+// 		console.log('worker ' + worker.process.pid + ' died');
+// 		if (worker.suicide !== true) {
+// 			console.log('restarting process ' + worker.id);
+// 			// http.createServer(onRequest).listen(PORT);
+// 		}
+// 	});
+// } else {
 	app.get("*", function(request, response) {
 		var webPath = url.parse(request.url).pathname;
 		// console.log("webPath: " + webPath);
@@ -58,7 +58,7 @@ if (cluster.isMaster) {
 		}
 	});
 	app.listen(PORT);
-}
+// }
 function logError(error) {
 	console.error("ERROR " + JSON.stringify(error));
 	console.error(error.stack);
