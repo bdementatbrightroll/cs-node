@@ -1,4 +1,4 @@
-console.log('starting up');
+// console.log('starting up');
 
 require('newrelic');
 // var posix	= require('posix');
@@ -7,14 +7,18 @@ var os		= require('os');
 var url		= require('url');
 var path	= require('path');
 var fs		= require('fs');
-var whitelist = require('./whitelist.json'); // UPDATES REQUIRE RESTART
 var app = require('express')();
+var util 	= require('util');
+
+var whitelist = [
+	"/campaigns/ccanotherperiod/"
+]
 
 var handlers = {};
 for (var key in whitelist) {
 	var webPath = whitelist[key]
 	var fileSystemPath = path.join(__dirname, webPath);
-	console.log('require(' + fileSystemPath + ')');
+	// console.log('require(' + fileSystemPath + ')');
 	handlers[webPath] = require(fileSystemPath);
 }
 
@@ -30,28 +34,28 @@ if (cluster.isMaster) {
 	cluster.on('exit', function(worker, code, signal) {
 		console.log('worker ' + worker.process.pid + ' died');
 		if (worker.suicide !== true) {
-			console.log('restarting process ' + worker.id);
-			// http.createServer(onRequest).listen(PORT);
+			// console.log('restarting process ' + worker.id);
 		}
 	});
 } else {
+	
+	app.get("/crossdomain.xml", function(req, res) {
+		res.status(200).type("xml").send('<?xml version="1.0"?><!DOCTYPE cross-domain-policy SYSTEM "http://www.adobe.com/xml/dtds/cross-domain-policy.dtd"><cross-domain-policy><site-control permitted-cross-domain-policies="all"/><allow-access-from domain="*" secure="false"/><allow-http-request-headers-from domain="*" headers="*" secure="false"/></cross-domain-policy>');		
+	});
+
 	app.get("*", function(request, response) {
 		var webPath = url.parse(request.url).pathname;
 		console.log("webPath: " + webPath);
 		var fileSystemPath = path.join(__dirname, webPath);
 		// console.log("fileSystemPath: " + fileSystemPath);
-		if (webPath === "/crossdomain.xml") {
-			response.status(200).type("xml").send('<cross-domain-policy><site-control permitted-cross-domain-policies="all"/><allow-access-from domain="*" secure="false"/><allow-http-request-headers-from domain="*" headers="*" secure="false"/></cross-domain-policy>');
-			// response.status(200).sendFile(__dirname + '/crossdomain.xml');
-			return;
-		}
 		if (whitelist.indexOf(webPath) === -1) {
 			//TODO log invalid request
-			console.error('invalid request: ' + webPath);
+			// console.error('invalid request: ' + webPath);
 			send404(response);
 			return;
 		}
 		var handler = handlers[webPath];
+		// console.log(util.inspect(handler));
 		try {
 			handler.onRequest(request, response);
 		} catch(e) {
@@ -60,6 +64,8 @@ if (cluster.isMaster) {
 			send503(response);
 		}
 	});
+
+	console.log('Server running on port ' + PORT);
 	app.listen(PORT);
 }
 function logError(error) {
@@ -70,10 +76,7 @@ function logError(error) {
 }
 function send404(response) {
 	response.status(404).send('404 - Not found');
-	response.end();
 }
 function send503(response) {
 	response.status(503).send('503 - Interal Server Error');
-	response.end();
 }
-console.log('Server running on port ' + PORT);
