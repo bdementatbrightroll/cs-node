@@ -1,6 +1,6 @@
 // console.log('starting up');
 
-require('newrelic');
+// require('newrelic');
 // var posix	= require('posix');
 var cluster	= require('cluster');
 var os		= require('os');
@@ -45,7 +45,7 @@ if (cluster.isMaster) {
 
 	app.get("*", function(request, response) {
 		var webPath = url.parse(request.url).pathname;
-		console.log("webPath: " + webPath);
+		// console.log("webPath: " + webPath);
 		var fileSystemPath = path.join(__dirname, webPath);
 		// console.log("fileSystemPath: " + fileSystemPath);
 		if (whitelist.indexOf(webPath) === -1) {
