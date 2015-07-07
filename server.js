@@ -11,7 +11,8 @@ var app = require('express')();
 var util 	= require('util');
 
 var whitelist = [
-	"/campaigns/ccanotherperiod/"
+	"/campaigns/ccanotherperiod/",
+	"/campaigns/culvers/"
 ]
 
 var handlers = {};
