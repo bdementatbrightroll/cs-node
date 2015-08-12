@@ -29,7 +29,24 @@ module.exports.onRequest = function(request, response) {
 	}
 	console.log("[CULVERS] closestLocation: " + util.inspect(closestLocation));
 	if (closestLocation) {
-		response.write(JSON.stringify(closestLocation));
+
+		var template =	"<location>\n" +
+						"	<Address><![CDATA[${Address}]]></Address>\n" +
+						"	<City><![CDATA[${City}]]></City>\n" +
+						"	<State><![CDATA[${State}]]></State>\n" +
+						"	<Postal><![CDATA[${Postal}]]></Postal>\n" +
+						"	<Phone><![CDATA[${Phone}]]></Phone>\n" +
+						"	<Url><![CDATA[${Url}]]></Url>\n" +
+						"</location>";
+
+		var xml = template 	.replace("${Address}", closestLocation.Address)
+							.replace("${City}", closestLocation.City)
+							.replace("${State}", closestLocation.State)
+							.replace("${Postal}", closestLocation.Postal)
+							.replace("${Phone}", closestLocation.Phone)
+							.replace("${Url}", closestLocation.Url);
+
+		response.write(xml);
 		response.end();	
 	} else {
 		throw new Error("Couldn't find a location! (" + ip + ")");

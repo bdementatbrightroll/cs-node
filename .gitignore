@@ -3,6 +3,7 @@ logs
 *.log
 .DS_Store
 dump.rdb
+nohup.out
 
 # Runtime data
 pids
