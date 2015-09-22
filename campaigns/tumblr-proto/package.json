@@ -1,0 +1,11 @@
+{
+  "name": "tumblr-proto",
+  "version": "1.0.0",
+  "description": "Returns a tumblr video URL",
+  "main": "tumblr-proto.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Brandon Dement",
+  "license": "ISC"
+}
